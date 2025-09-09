@@ -62,12 +62,14 @@ const Index = () => {
   }, [activeSection]);
 
   const regionData = [
-    { region: 'Москва', vacancies: 3245, salary: '180000', coords: { x: 180, y: 80 } },
-    { region: 'Санкт-Петербург', vacancies: 1876, salary: '150000', coords: { x: 160, y: 60 } },
-    { region: 'Новосибирск', vacancies: 432, salary: '120000', coords: { x: 280, y: 100 } },
-    { region: 'Екатеринбург', vacancies: 387, salary: '115000', coords: { x: 220, y: 90 } },
-    { region: 'Казань', vacancies: 298, salary: '110000', coords: { x: 200, y: 85 } },
-    { region: 'Краснодар', vacancies: 156, salary: '105000', coords: { x: 170, y: 130 } },
+    { region: 'Москва', vacancies: 3245, salary: '180000', coords: { x: 200, y: 180 } },
+    { region: 'СПб', vacancies: 1876, salary: '150000', coords: { x: 180, y: 155 } },
+    { region: 'Новосибирск', vacancies: 432, salary: '120000', coords: { x: 450, y: 175 } },
+    { region: 'Екатеринбург', vacancies: 387, salary: '115000', coords: { x: 320, y: 170 } },
+    { region: 'Казань', vacancies: 298, salary: '110000', coords: { x: 240, y: 175 } },
+    { region: 'Краснодар', vacancies: 156, salary: '105000', coords: { x: 190, y: 210 } },
+    { region: 'Владивосток', vacancies: 89, salary: '125000', coords: { x: 680, y: 195 } },
+    { region: 'Хабаровск', vacancies: 134, salary: '115000', coords: { x: 650, y: 170 } },
   ];
 
   const renderHeader = () => (
@@ -346,71 +348,184 @@ const Index = () => {
       <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="p-6">
           <div className="h-96 relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-50 to-teal-50">
-            <svg className="w-full h-full" viewBox="0 0 400 300">
-              {/* Упрощенная карта России */}
+            <svg className="w-full h-full" viewBox="0 0 800 500">
+              {/* Градиенты для карты */}
+              <defs>
+                <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#e0f2fe" />
+                  <stop offset="50%" stopColor="#b3e5fc" />
+                  <stop offset="100%" stopColor="#81d4fa" />
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/> 
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              {/* Более детальная карта России */}
+              {/* Европейская часть */}
               <path
-                d="M50 100 Q100 80 150 85 Q200 90 250 95 Q300 100 350 105 L350 180 Q300 185 250 180 Q200 175 150 180 Q100 185 50 180 Z"
-                fill="#e0f2fe"
+                d="M80 150 Q120 140 150 145 Q180 148 200 155 L220 160 Q240 165 250 175 L250 200 Q245 210 235 215 L200 220 Q170 225 140 220 Q110 215 85 200 L80 180 Z"
+                fill="url(#mapGradient)"
                 stroke="#20B0B4"
                 strokeWidth="2"
-                className="hover:fill-[#20B0B4]/20 transition-all duration-300"
+                className="hover:fill-[#20B0B4]/30 transition-all duration-500 cursor-pointer"
+                onMouseEnter={() => setHoveredRegion('Европейская часть')}
+                onMouseLeave={() => setHoveredRegion(null)}
               />
               
-              {/* Регионы-маркеры */}
-              {regionData.map((region, index) => (
-                <g key={region.region}>
-                  <circle
-                    cx={region.coords.x}
-                    cy={region.coords.y}
-                    r={Math.sqrt(region.vacancies / 50)}
-                    fill="#20B0B4"
-                    className="hover:fill-[#072A4A] transition-all duration-300 cursor-pointer animate-pulse"
-                    style={{ animationDelay: `${index * 0.2}s` }}
-                    onMouseEnter={() => setHoveredRegion(region.region)}
-                    onMouseLeave={() => setHoveredRegion(null)}
-                  />
-                  <text
-                    x={region.coords.x}
-                    y={region.coords.y - Math.sqrt(region.vacancies / 50) - 10}
-                    textAnchor="middle"
-                    className="text-xs fill-[#072A4A] font-medium"
-                  >
-                    {region.region}
-                  </text>
-                  
-                  {hoveredRegion === region.region && (
-                    <g className="animate-fade-in">
-                      <rect
-                        x={region.coords.x - 40}
-                        y={region.coords.y - 50}
-                        width="80"
-                        height="30"
-                        fill="white"
-                        stroke="#20B0B4"
-                        strokeWidth="1"
-                        rx="5"
-                        className="drop-shadow-lg"
-                      />
-                      <text
-                        x={region.coords.x}
-                        y={region.coords.y - 40}
-                        textAnchor="middle"
-                        className="text-xs fill-[#072A4A] font-semibold"
-                      >
-                        {region.vacancies} вакансий
-                      </text>
-                      <text
-                        x={region.coords.x}
-                        y={region.coords.y - 28}
-                        textAnchor="middle"
-                        className="text-xs fill-[#20B0B4] font-medium"
-                      >
-                        {parseInt(region.salary).toLocaleString()} ₽
-                      </text>
-                    </g>
-                  )}
-                </g>
-              ))}
+              {/* Сибирь */}
+              <path
+                d="M250 140 Q300 135 350 140 Q400 145 450 150 Q500 155 550 160 L570 175 Q575 190 570 205 L550 215 Q500 220 450 215 Q400 210 350 205 Q300 200 250 195 L250 175 Z"
+                fill="url(#mapGradient)"
+                stroke="#20B0B4"
+                strokeWidth="2"
+                className="hover:fill-[#20B0B4]/30 transition-all duration-500 cursor-pointer"
+                onMouseEnter={() => setHoveredRegion('Сибирь')}
+                onMouseLeave={() => setHoveredRegion(null)}
+              />
+              
+              {/* Дальний Восток */}
+              <path
+                d="M570 130 Q620 125 670 130 Q720 135 750 140 L770 155 Q775 170 770 185 L750 195 Q720 200 670 195 Q620 190 570 185 L570 165 Z"
+                fill="url(#mapGradient)"
+                stroke="#20B0B4"
+                strokeWidth="2"
+                className="hover:fill-[#20B0B4]/30 transition-all duration-500 cursor-pointer"
+                onMouseEnter={() => setHoveredRegion('Дальний Восток')}
+                onMouseLeave={() => setHoveredRegion(null)}
+              />
+              
+              {/* Маркеры городов с вакансиями */}
+              {regionData.map((region, index) => {
+                const size = Math.max(8, Math.sqrt(region.vacancies / 30));
+                return (
+                  <g key={region.region}>
+                    {/* Пульсирующие кольца */}
+                    <circle
+                      cx={region.coords.x}
+                      cy={region.coords.y}
+                      r={size + 15}
+                      fill="none"
+                      stroke="#20B0B4"
+                      strokeWidth="2"
+                      opacity="0.3"
+                      className="animate-ping"
+                      style={{ animationDelay: `${index * 0.5}s`, animationDuration: '3s' }}
+                    />
+                    
+                    {/* Основной маркер */}
+                    <circle
+                      cx={region.coords.x}
+                      cy={region.coords.y}
+                      r={size}
+                      fill="#20B0B4"
+                      stroke="white"
+                      strokeWidth="3"
+                      className="hover:fill-[#072A4A] hover:scale-125 transition-all duration-300 cursor-pointer filter drop-shadow-lg"
+                      onMouseEnter={() => setHoveredRegion(region.region)}
+                      onMouseLeave={() => setHoveredRegion(null)}
+                      filter="url(#glow)"
+                    />
+                    
+                    {/* Название города */}
+                    <text
+                      x={region.coords.x}
+                      y={region.coords.y - size - 8}
+                      textAnchor="middle"
+                      className="text-sm fill-[#072A4A] font-semibold drop-shadow-sm"
+                      style={{ textShadow: '1px 1px 2px rgba(255,255,255,0.8)' }}
+                    >
+                      {region.region}
+                    </text>
+                    
+                    {/* Количество вакансий в центре */}
+                    <text
+                      x={region.coords.x}
+                      y={region.coords.y + 4}
+                      textAnchor="middle"
+                      className="text-xs fill-white font-bold"
+                    >
+                      {region.vacancies > 1000 ? `${Math.round(region.vacancies/1000)}k` : region.vacancies}
+                    </text>
+                    
+                    {/* Детальное всплывающее окно */}
+                    {hoveredRegion === region.region && (
+                      <g className="animate-fade-in">
+                        {/* Тень для карточки */}
+                        <rect
+                          x={region.coords.x - 65}
+                          y={region.coords.y - 85}
+                          width="130"
+                          height="65"
+                          fill="rgba(0,0,0,0.1)"
+                          rx="8"
+                          transform="translate(2, 2)"
+                        />
+                        
+                        {/* Карточка с информацией */}
+                        <rect
+                          x={region.coords.x - 65}
+                          y={region.coords.y - 85}
+                          width="130"
+                          height="65"
+                          fill="white"
+                          stroke="#20B0B4"
+                          strokeWidth="2"
+                          rx="8"
+                          className="drop-shadow-xl"
+                        />
+                        
+                        {/* Заголовок */}
+                        <text
+                          x={region.coords.x}
+                          y={region.coords.y - 65}
+                          textAnchor="middle"
+                          className="text-sm fill-[#072A4A] font-bold"
+                        >
+                          {region.region}
+                        </text>
+                        
+                        {/* Количество вакансий */}
+                        <text
+                          x={region.coords.x}
+                          y={region.coords.y - 48}
+                          textAnchor="middle"
+                          className="text-xs fill-gray-600"
+                        >
+                          💼 {region.vacancies} вакансий
+                        </text>
+                        
+                        {/* Средняя зарплата */}
+                        <text
+                          x={region.coords.x}
+                          y={region.coords.y - 32}
+                          textAnchor="middle"
+                          className="text-sm fill-[#20B0B4] font-semibold"
+                        >
+                          💰 {parseInt(region.salary).toLocaleString()} ₽
+                        </text>
+                        
+                        {/* Стрелка */}
+                        <path
+                          d={`M${region.coords.x} ${region.coords.y - 20} L${region.coords.x - 5} ${region.coords.y - 15} L${region.coords.x + 5} ${region.coords.y - 15} Z`}
+                          fill="white"
+                          stroke="#20B0B4"
+                          strokeWidth="1"
+                        />
+                      </g>
+                    )}
+                  </g>
+                );
+              })}
+              
+              {/* Декоративные элементы */}
+              <circle cx="100" cy="100" r="2" fill="#20B0B4" opacity="0.6" className="animate-pulse" />
+              <circle cx="700" cy="120" r="1.5" fill="#072A4A" opacity="0.4" className="animate-pulse" style={{ animationDelay: '1s' }} />
+              <circle cx="400" cy="80" r="1" fill="#20B0B4" opacity="0.3" className="animate-pulse" style={{ animationDelay: '2s' }} />
             </svg>
           </div>
         </CardContent>
