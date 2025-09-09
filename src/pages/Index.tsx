@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,76 +9,103 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
-  // Мокаем данные для аналитики
+  // Данные для аналитики с анимацией
   const vacancyStats = [
-    { title: 'Frontend разработчик', count: 1247, growth: '+15%' },
-    { title: 'Backend разработчик', count: 892, growth: '+8%' },
-    { title: 'DevOps инженер', count: 543, growth: '+22%' },
-    { title: 'QA инженер', count: 367, growth: '+12%' },
+    { title: 'Frontend разработчик', count: 1247, growth: '+15%', color: '#20B0B4' },
+    { title: 'Backend разработчик', count: 892, growth: '+8%', color: '#072A4A' },
+    { title: 'DevOps инженер', count: 543, growth: '+22%', color: '#20B0B4' },
+    { title: 'QA инженер', count: 367, growth: '+12%', color: '#072A4A' },
   ];
 
+  // Данные для графика по месяцам
+  const monthlyData = [
+    { month: 'Янв', value: 850 },
+    { month: 'Фев', value: 920 },
+    { month: 'Мар', value: 1100 },
+    { month: 'Апр', value: 1350 },
+    { month: 'Май', value: 1580 },
+    { month: 'Июн', value: 1820 },
+    { month: 'Июл', value: 2100 },
+    { month: 'Авг', value: 2350 },
+  ];
+
+  // Анимация счетчиков
+  useEffect(() => {
+    if (activeSection === 'dashboard') {
+      const timers = vacancyStats.map((stat, index) => {
+        return setTimeout(() => {
+          let start = 0;
+          const end = stat.count;
+          const duration = 2000;
+          const increment = end / (duration / 16);
+          
+          const timer = setInterval(() => {
+            start += increment;
+            setAnimatedStats(prev => {
+              const newStats = [...prev];
+              newStats[index] = Math.min(Math.floor(start), end);
+              return newStats;
+            });
+            
+            if (start >= end) {
+              clearInterval(timer);
+            }
+          }, 16);
+        }, index * 200);
+      });
+      
+      return () => timers.forEach(clearTimeout);
+    }
+  }, [activeSection]);
+
   const regionData = [
-    { region: 'Москва', vacancies: 3245, salary: '180000' },
-    { region: 'Санкт-Петербург', vacancies: 1876, salary: '150000' },
-    { region: 'Новосибирск', vacancies: 432, salary: '120000' },
-    { region: 'Екатеринburg', vacancies: 387, salary: '115000' },
+    { region: 'Москва', vacancies: 3245, salary: '180000', coords: { x: 180, y: 80 } },
+    { region: 'Санкт-Петербург', vacancies: 1876, salary: '150000', coords: { x: 160, y: 60 } },
+    { region: 'Новосибирск', vacancies: 432, salary: '120000', coords: { x: 280, y: 100 } },
+    { region: 'Екатеринбург', vacancies: 387, salary: '115000', coords: { x: 220, y: 90 } },
+    { region: 'Казань', vacancies: 298, salary: '110000', coords: { x: 200, y: 85 } },
+    { region: 'Краснодар', vacancies: 156, salary: '105000', coords: { x: 170, y: 130 } },
   ];
 
   const renderHeader = () => (
-    <header className="bg-[#072A4A] text-white shadow-lg">
+    <header className="bg-[#072A4A] text-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
-            <Icon name="TrendingUp" size={32} className="text-[#20B0B4]" />
-            <h1 className="text-2xl font-bold">Skill Pulse</h1>
+          <div className="flex items-center space-x-2 group">
+            <Icon name="TrendingUp" size={32} className="text-[#20B0B4] group-hover:scale-110 transition-transform" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-[#20B0B4] bg-clip-text text-transparent">
+              Skill Pulse
+            </h1>
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <button
-              onClick={() => setActiveSection('dashboard')}
-              className={`hover:text-[#20B0B4] transition-colors ${
-                activeSection === 'dashboard' ? 'text-[#20B0B4]' : ''
-              }`}
-            >
-              Дашборд
-            </button>
-            <button
-              onClick={() => setActiveSection('vacancies')}
-              className={`hover:text-[#20B0B4] transition-colors ${
-                activeSection === 'vacancies' ? 'text-[#20B0B4]' : ''
-              }`}
-            >
-              Вакансии
-            </button>
-            <button
-              onClick={() => setActiveSection('map')}
-              className={`hover:text-[#20B0B4] transition-colors ${
-                activeSection === 'map' ? 'text-[#20B0B4]' : ''
-              }`}
-            >
-              Карта
-            </button>
-            <button
-              onClick={() => setActiveSection('profile')}
-              className={`hover:text-[#20B0B4] transition-colors ${
-                activeSection === 'profile' ? 'text-[#20B0B4]' : ''
-              }`}
-            >
-              Профиль
-            </button>
-            <button
-              onClick={() => setActiveSection('about')}
-              className={`hover:text-[#20B0B4] transition-colors ${
-                activeSection === 'about' ? 'text-[#20B0B4]' : ''
-              }`}
-            >
-              О нас
-            </button>
+            {[
+              { key: 'dashboard', label: 'Дашборд' },
+              { key: 'vacancies', label: 'Вакансии' },
+              { key: 'map', label: 'Карта' },
+              { key: 'profile', label: 'Профиль' },
+              { key: 'about', label: 'О нас' }
+            ].map(item => (
+              <button
+                key={item.key}
+                onClick={() => setActiveSection(item.key)}
+                className={`relative hover:text-[#20B0B4] transition-all duration-300 ${
+                  activeSection === item.key ? 'text-[#20B0B4]' : ''
+                } after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#20B0B4] after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left`}
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-[#072A4A]">
+            <Button 
+              variant="outline" 
+              className="text-white border-white hover:bg-white hover:text-[#072A4A] transform hover:scale-105 transition-all duration-200"
+            >
               Войти
             </Button>
           </div>
@@ -88,22 +115,45 @@ const Index = () => {
   );
 
   const renderDashboard = () => (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-[#072A4A] mb-4">Аналитика рынка IT-вакансий</h2>
-        <p className="text-gray-600 text-lg">Актуальные данные по востребованным специальностям</p>
+        <h2 className="text-4xl font-bold text-[#072A4A] mb-4 bg-gradient-to-r from-[#072A4A] to-[#20B0B4] bg-clip-text text-transparent">
+          Аналитика рынка IT-вакансий
+        </h2>
+        <p className="text-gray-600 text-lg animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          Актуальные данные по востребованным специальностям
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {vacancyStats.map((stat, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
+          <Card 
+            key={index} 
+            className="hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group animate-fade-in"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600 group-hover:text-[#20B0B4] transition-colors">
+                {stat.title}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <span className="text-3xl font-bold text-[#072A4A]">{stat.count}</span>
-                <Badge className="bg-[#20B0B4] text-white">{stat.growth}</Badge>
+                <span className="text-3xl font-bold text-[#072A4A] group-hover:scale-110 transition-transform">
+                  {animatedStats[index].toLocaleString()}
+                </span>
+                <Badge className="bg-[#20B0B4] text-white group-hover:bg-[#072A4A] transition-colors">
+                  {stat.growth}
+                </Badge>
+              </div>
+              <div className="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full transition-all duration-1000 ease-out rounded-full"
+                  style={{ 
+                    width: `${(animatedStats[index] / stat.count) * 100}%`,
+                    backgroundColor: stat.color
+                  }}
+                />
               </div>
             </CardContent>
           </Card>
@@ -111,39 +161,95 @@ const Index = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Icon name="BarChart3" size={20} />
+              <Icon name="BarChart3" size={20} className="text-[#20B0B4]" />
               <span>Динамика вакансий</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64 bg-gradient-to-r from-[#20B0B4]/10 to-[#072A4A]/10 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <Icon name="TrendingUp" size={48} className="text-[#20B0B4] mx-auto mb-4" />
-                <p className="text-gray-600">График роста вакансий по месяцам</p>
-              </div>
+            <div className="h-64 relative">
+              <svg className="w-full h-full" viewBox="0 0 400 200">
+                {/* Градиент */}
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#20B0B4" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#20B0B4" stopOpacity="0.1" />
+                  </linearGradient>
+                </defs>
+                
+                {/* Линии сетки */}
+                {[0, 50, 100, 150].map(y => (
+                  <line key={y} x1="50" y1={y + 20} x2="370" y2={y + 20} stroke="#e5e7eb" strokeWidth="1" />
+                ))}
+                
+                {/* График */}
+                <polyline
+                  fill="url(#gradient)"
+                  stroke="#20B0B4"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  points={monthlyData.map((item, index) => 
+                    `${50 + (index * 45)},${170 - (item.value / 2500) * 130}`
+                  ).join(' ') + ' 370,170 50,170'}
+                />
+                
+                {/* Точки */}
+                {monthlyData.map((item, index) => (
+                  <g key={index}>
+                    <circle
+                      cx={50 + (index * 45)}
+                      cy={170 - (item.value / 2500) * 130}
+                      r="4"
+                      fill="#20B0B4"
+                      className="hover:r-6 transition-all cursor-pointer animate-pulse"
+                      style={{ animationDelay: `${index * 0.1}s`, animationDuration: '2s' }}
+                    />
+                    <text
+                      x={50 + (index * 45)}
+                      y={190}
+                      textAnchor="middle"
+                      className="text-xs fill-gray-600"
+                    >
+                      {item.month}
+                    </text>
+                    <text
+                      x={50 + (index * 45)}
+                      y={170 - (item.value / 2500) * 130 - 10}
+                      textAnchor="middle"
+                      className="text-xs fill-[#072A4A] font-semibold opacity-0 hover:opacity-100 transition-opacity"
+                    >
+                      {item.value}
+                    </text>
+                  </g>
+                ))}
+              </svg>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.7s' }}>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Icon name="MapPin" size={20} />
+              <Icon name="MapPin" size={20} className="text-[#20B0B4]" />
               <span>Топ регионов</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {regionData.map((region, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              {regionData.slice(0, 4).map((region, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-[#20B0B4]/10 transition-all duration-300 cursor-pointer transform hover:scale-102"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
                   <div>
                     <span className="font-medium text-[#072A4A]">{region.region}</span>
                     <p className="text-sm text-gray-600">{region.vacancies} вакансий</p>
                   </div>
-                  <Badge variant="outline" className="text-[#20B0B4] border-[#20B0B4]">
+                  <Badge variant="outline" className="text-[#20B0B4] border-[#20B0B4] hover:bg-[#20B0B4] hover:text-white transition-colors">
                     {parseInt(region.salary).toLocaleString()} ₽
                   </Badge>
                 </div>
@@ -234,37 +340,101 @@ const Index = () => {
   );
 
   const renderMap = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <h2 className="text-2xl font-bold text-[#072A4A]">Карта вакансий по России</h2>
       
-      <Card>
+      <Card className="hover:shadow-lg transition-shadow">
         <CardContent className="p-6">
-          <div className="h-96 bg-gradient-to-br from-[#20B0B4]/20 to-[#072A4A]/20 rounded-lg flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100"></div>
-            <div className="relative z-10 text-center">
-              <Icon name="Map" size={64} className="text-[#20B0B4] mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#072A4A] mb-2">Интерактивная карта России</h3>
-              <p className="text-gray-600">Здесь отображаются вакансии по регионам</p>
-            </div>
-            
-            {/* Имитируем маркеры на карте */}
-            <div className="absolute top-20 left-1/3 w-4 h-4 bg-[#20B0B4] rounded-full animate-pulse"></div>
-            <div className="absolute top-32 right-1/4 w-3 h-3 bg-[#072A4A] rounded-full animate-pulse"></div>
-            <div className="absolute bottom-24 left-1/2 w-3 h-3 bg-[#20B0B4] rounded-full animate-pulse"></div>
+          <div className="h-96 relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-50 to-teal-50">
+            <svg className="w-full h-full" viewBox="0 0 400 300">
+              {/* Упрощенная карта России */}
+              <path
+                d="M50 100 Q100 80 150 85 Q200 90 250 95 Q300 100 350 105 L350 180 Q300 185 250 180 Q200 175 150 180 Q100 185 50 180 Z"
+                fill="#e0f2fe"
+                stroke="#20B0B4"
+                strokeWidth="2"
+                className="hover:fill-[#20B0B4]/20 transition-all duration-300"
+              />
+              
+              {/* Регионы-маркеры */}
+              {regionData.map((region, index) => (
+                <g key={region.region}>
+                  <circle
+                    cx={region.coords.x}
+                    cy={region.coords.y}
+                    r={Math.sqrt(region.vacancies / 50)}
+                    fill="#20B0B4"
+                    className="hover:fill-[#072A4A] transition-all duration-300 cursor-pointer animate-pulse"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                    onMouseEnter={() => setHoveredRegion(region.region)}
+                    onMouseLeave={() => setHoveredRegion(null)}
+                  />
+                  <text
+                    x={region.coords.x}
+                    y={region.coords.y - Math.sqrt(region.vacancies / 50) - 10}
+                    textAnchor="middle"
+                    className="text-xs fill-[#072A4A] font-medium"
+                  >
+                    {region.region}
+                  </text>
+                  
+                  {hoveredRegion === region.region && (
+                    <g className="animate-fade-in">
+                      <rect
+                        x={region.coords.x - 40}
+                        y={region.coords.y - 50}
+                        width="80"
+                        height="30"
+                        fill="white"
+                        stroke="#20B0B4"
+                        strokeWidth="1"
+                        rx="5"
+                        className="drop-shadow-lg"
+                      />
+                      <text
+                        x={region.coords.x}
+                        y={region.coords.y - 40}
+                        textAnchor="middle"
+                        className="text-xs fill-[#072A4A] font-semibold"
+                      >
+                        {region.vacancies} вакансий
+                      </text>
+                      <text
+                        x={region.coords.x}
+                        y={region.coords.y - 28}
+                        textAnchor="middle"
+                        className="text-xs fill-[#20B0B4] font-medium"
+                      >
+                        {parseInt(region.salary).toLocaleString()} ₽
+                      </text>
+                    </g>
+                  )}
+                </g>
+              ))}
+            </svg>
           </div>
         </CardContent>
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <CardHeader>
             <CardTitle>Статистика по регионам</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {regionData.map((region, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <span className="text-[#072A4A] font-medium">{region.region}</span>
+                <div 
+                  key={index} 
+                  className="flex items-center justify-between hover:bg-[#20B0B4]/10 p-2 rounded transition-colors cursor-pointer"
+                  onMouseEnter={() => setHoveredRegion(region.region)}
+                  onMouseLeave={() => setHoveredRegion(null)}
+                >
+                  <span className={`font-medium transition-colors ${
+                    hoveredRegion === region.region ? 'text-[#20B0B4]' : 'text-[#072A4A]'
+                  }`}>
+                    {region.region}
+                  </span>
                   <span className="text-gray-600">{region.vacancies} вакансий</span>
                 </div>
               ))}
@@ -272,16 +442,19 @@ const Index = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <CardHeader>
             <CardTitle>Средняя зарплата</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {regionData.map((region, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div 
+                  key={index} 
+                  className="flex items-center justify-between hover:bg-[#20B0B4]/10 p-2 rounded transition-colors cursor-pointer"
+                >
                   <span className="text-[#072A4A] font-medium">{region.region}</span>
-                  <Badge className="bg-[#20B0B4]">
+                  <Badge className="bg-[#20B0B4] hover:bg-[#072A4A] transition-colors">
                     {parseInt(region.salary).toLocaleString()} ₽
                   </Badge>
                 </div>
