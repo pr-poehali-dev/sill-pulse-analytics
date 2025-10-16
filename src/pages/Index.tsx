@@ -11,6 +11,7 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  const [selectedTariff, setSelectedTariff] = useState('pro');
 
   // Данные для аналитики с анимацией
   const vacancyStats = [
@@ -86,9 +87,9 @@ const Index = () => {
           <nav className="hidden md:flex space-x-8">
             {[
               { key: 'dashboard', label: 'Дашборд' },
-              { key: 'vacancies', label: 'Вакансии' },
+              { key: 'features', label: 'Возможности' },
+              { key: 'pricing', label: 'Тарифы' },
               { key: 'map', label: 'Карта' },
-              { key: 'profile', label: 'Профиль' },
               { key: 'about', label: 'О нас' }
             ].map(item => (
               <button
@@ -645,6 +646,398 @@ const Index = () => {
     </div>
   );
 
+  const renderFeatures = () => (
+    <div className="space-y-12 animate-fade-in">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold text-[#072A4A] mb-4 bg-gradient-to-r from-[#072A4A] to-[#20B0B4] bg-clip-text text-transparent">
+          Профессиональный инструмент анализа рынка труда
+        </h2>
+        <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+          Полный набор инструментов для мониторинга, анализа и прогнозирования трендов на рынке IT-специалистов
+        </p>
+      </div>
+
+      {/* Примеры дашбордов */}
+      <div className="space-y-6">
+        <h3 className="text-2xl font-bold text-[#072A4A] flex items-center space-x-2">
+          <Icon name="LayoutDashboard" size={28} className="text-[#20B0B4]" />
+          <span>Интерактивные дашборды</span>
+        </h3>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="hover:shadow-2xl transition-all duration-300 group cursor-pointer">
+            <CardHeader className="bg-gradient-to-br from-blue-50 to-teal-50 pb-16">
+              <div className="absolute top-4 right-4">
+                <Badge className="bg-[#20B0B4]">Популярное</Badge>
+              </div>
+              <Icon name="TrendingUp" size={48} className="text-[#20B0B4] group-hover:scale-110 transition-transform" />
+            </CardHeader>
+            <CardContent className="pt-6">
+              <h4 className="text-xl font-bold text-[#072A4A] mb-2">Динамика рынка</h4>
+              <p className="text-gray-600 mb-4">Отслеживайте изменения спроса на специальности в реальном времени</p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-[#20B0B4]" />
+                  <span>Графики трендов по профессиям</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-[#20B0B4]" />
+                  <span>Анализ роста/падения спроса</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-[#20B0B4]" />
+                  <span>Прогнозы на 3-6 месяцев</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-2xl transition-all duration-300 group cursor-pointer">
+            <CardHeader className="bg-gradient-to-br from-purple-50 to-blue-50 pb-16">
+              <Icon name="MapPin" size={48} className="text-purple-600 group-hover:scale-110 transition-transform" />
+            </CardHeader>
+            <CardContent className="pt-6">
+              <h4 className="text-xl font-bold text-[#072A4A] mb-2">Региональная аналитика</h4>
+              <p className="text-gray-600 mb-4">Интерактивные карты с данными по городам и регионам</p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-purple-600" />
+                  <span>Зарплатные предложения по городам</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-purple-600" />
+                  <span>Плотность вакансий на карте</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-purple-600" />
+                  <span>Сравнение регионов</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-2xl transition-all duration-300 group cursor-pointer">
+            <CardHeader className="bg-gradient-to-br from-orange-50 to-yellow-50 pb-16">
+              <Icon name="Zap" size={48} className="text-orange-600 group-hover:scale-110 transition-transform" />
+            </CardHeader>
+            <CardContent className="pt-6">
+              <h4 className="text-xl font-bold text-[#072A4A] mb-2">Навыки и технологии</h4>
+              <p className="text-gray-600 mb-4">Анализ востребованности технологий и hard skills</p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-orange-600" />
+                  <span>Рейтинг популярных технологий</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-orange-600" />
+                  <span>Связь навыков и зарплат</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-orange-600" />
+                  <span>Emerging технологии</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Примеры отчетов */}
+      <div className="space-y-6">
+        <h3 className="text-2xl font-bold text-[#072A4A] flex items-center space-x-2">
+          <Icon name="FileText" size={28} className="text-[#20B0B4]" />
+          <span>Автоматические отчеты</span>
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="hover:shadow-xl transition-all duration-300">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center space-x-2">
+                  <Icon name="Calendar" size={20} className="text-[#20B0B4]" />
+                  <span>Еженедельный дайджест</span>
+                </CardTitle>
+                <Badge variant="outline">Автоматически</Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                <Icon name="TrendingUp" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Топ-5 растущих профессий</p>
+                  <p className="text-sm text-gray-600">Список самых быстрорастущих направлений за неделю</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                <Icon name="DollarSign" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Зарплатные изменения</p>
+                  <p className="text-sm text-gray-600">Анализ динамики предложений по зарплатам</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                <Icon name="Users" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Активность работодателей</p>
+                  <p className="text-sm text-gray-600">Какие компании публикуют больше всего вакансий</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-xl transition-all duration-300">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center space-x-2">
+                  <Icon name="FileBarChart" size={20} className="text-[#20B0B4]" />
+                  <span>Кастомные отчеты</span>
+                </CardTitle>
+                <Badge variant="outline">По запросу</Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-start space-x-3 p-3 bg-teal-50 rounded-lg">
+                <Icon name="Filter" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Фильтры по любым параметрам</p>
+                  <p className="text-sm text-gray-600">Выбирайте профессии, регионы, период, уровень</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-teal-50 rounded-lg">
+                <Icon name="Download" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Экспорт в Excel/PDF</p>
+                  <p className="text-sm text-gray-600">Готовые отчеты для презентаций и аналитики</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-teal-50 rounded-lg">
+                <Icon name="Share2" size={20} className="text-[#20B0B4] mt-1" />
+                <div>
+                  <p className="font-medium text-[#072A4A]">Шаринг с командой</p>
+                  <p className="text-sm text-gray-600">Делитесь инсайтами с коллегами одной кнопкой</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Преимущества */}
+      <Card className="bg-gradient-to-br from-[#072A4A] to-[#20B0B4] text-white">
+        <CardContent className="py-12">
+          <h3 className="text-3xl font-bold text-center mb-8">Почему выбирают Skill Pulse?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name="Database" size={32} />
+              </div>
+              <h4 className="text-xl font-bold mb-2">Актуальные данные</h4>
+              <p className="text-white/80">Обновление базы вакансий каждые 2 часа</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name="BarChart3" size={32} />
+              </div>
+              <h4 className="text-xl font-bold mb-2">Глубокая аналитика</h4>
+              <p className="text-white/80">ML-алгоритмы для выявления трендов</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name="Sparkles" size={32} />
+              </div>
+              <h4 className="text-xl font-bold mb-2">Простота использования</h4>
+              <p className="text-white/80">Интуитивный интерфейс без обучения</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderPricing = () => (
+    <div className="space-y-12 animate-fade-in">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold text-[#072A4A] mb-4 bg-gradient-to-r from-[#072A4A] to-[#20B0B4] bg-clip-text text-transparent">
+          Тарифы и возможности
+        </h2>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          Выберите подходящий план для вашего бизнеса
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Базовый */}
+        <Card className={`hover:shadow-2xl transition-all duration-300 ${
+          selectedTariff === 'basic' ? 'ring-2 ring-[#20B0B4]' : ''
+        }`}>
+          <CardHeader className="text-center pb-8">
+            <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+              <Icon name="User" size={32} className="text-blue-600" />
+            </div>
+            <CardTitle className="text-2xl mb-2">Базовый</CardTitle>
+            <div className="text-4xl font-bold text-[#072A4A]">Бесплатно</div>
+            <p className="text-gray-600 mt-2">Для знакомства с сервисом</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">Базовая статистика</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">10 вакансий в день</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">3 региона</span>
+              </li>
+              <li className="flex items-center space-x-2 opacity-50">
+                <Icon name="X" size={18} className="text-gray-400" />
+                <span className="text-gray-400">Экспорт данных</span>
+              </li>
+              <li className="flex items-center space-x-2 opacity-50">
+                <Icon name="X" size={18} className="text-gray-400" />
+                <span className="text-gray-400">API доступ</span>
+              </li>
+            </ul>
+            <Button 
+              className="w-full mt-6" 
+              variant="outline"
+              onClick={() => setSelectedTariff('basic')}
+            >
+              Начать бесплатно
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Профессиональный */}
+        <Card className={`hover:shadow-2xl transition-all duration-300 relative ${
+          selectedTariff === 'pro' ? 'ring-2 ring-[#20B0B4] scale-105' : ''
+        }`}>
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <Badge className="bg-[#20B0B4] text-white px-4 py-1">Популярный</Badge>
+          </div>
+          <CardHeader className="text-center pb-8">
+            <div className="mx-auto w-16 h-16 bg-[#20B0B4]/20 rounded-full flex items-center justify-center mb-4">
+              <Icon name="Briefcase" size={32} className="text-[#20B0B4]" />
+            </div>
+            <CardTitle className="text-2xl mb-2">Профессиональный</CardTitle>
+            <div className="text-4xl font-bold text-[#20B0B4]">₽4,990<span className="text-lg text-gray-600">/мес</span></div>
+            <p className="text-gray-600 mt-2">Для HR и рекрутеров</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Полная аналитика</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Неограниченно вакансий</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Все регионы</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Экспорт в Excel/PDF</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Email-рассылки</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700 font-medium">Приоритетная поддержка</span>
+              </li>
+            </ul>
+            <Button 
+              className="w-full mt-6 bg-[#20B0B4] hover:bg-[#072A4A]" 
+              onClick={() => setSelectedTariff('pro')}
+            >
+              Выбрать план
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Корпоративный */}
+        <Card className={`hover:shadow-2xl transition-all duration-300 ${
+          selectedTariff === 'enterprise' ? 'ring-2 ring-[#20B0B4]' : ''
+        }`}>
+          <CardHeader className="text-center pb-8">
+            <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+              <Icon name="Building2" size={32} className="text-purple-600" />
+            </div>
+            <CardTitle className="text-2xl mb-2">Корпоративный</CardTitle>
+            <div className="text-4xl font-bold text-[#072A4A]">₽14,990<span className="text-lg text-gray-600">/мес</span></div>
+            <p className="text-gray-600 mt-2">Для крупных компаний</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">Всё из плана PRO</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">API доступ</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">До 10 пользователей</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">Кастомные отчеты</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">Персональный менеджер</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Icon name="Check" size={18} className="text-green-600" />
+                <span className="text-gray-700">SLA 99.9%</span>
+              </li>
+            </ul>
+            <Button 
+              className="w-full mt-6" 
+              variant="outline"
+              onClick={() => setSelectedTariff('enterprise')}
+            >
+              Связаться с нами
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* FAQ по тарифам */}
+      <Card className="max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Icon name="HelpCircle" size={24} className="text-[#20B0B4]" />
+            <span>Часто задаваемые вопросы</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="border-b pb-4">
+            <h4 className="font-semibold text-[#072A4A] mb-2">Можно ли изменить тариф в любой момент?</h4>
+            <p className="text-gray-600">Да, вы можете повысить или понизить тариф в любое время. При повышении доступ к новым функциям открывается мгновенно.</p>
+          </div>
+          <div className="border-b pb-4">
+            <h4 className="font-semibold text-[#072A4A] mb-2">Есть ли скидки при годовой оплате?</h4>
+            <p className="text-gray-600">Да, при оплате за год предоставляется скидка 20%. Например, тариф PRO обойдется в ₽47,900 вместо ₽59,880.</p>
+          </div>
+          <div className="pb-4">
+            <h4 className="font-semibold text-[#072A4A] mb-2">Какие способы оплаты принимаются?</h4>
+            <p className="text-gray-600">Мы принимаем банковские карты (Visa, MasterCard, МИР), электронные кошельки и банковские переводы для юридических лиц.</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   const renderAbout = () => (
     <div className="space-y-8">
       <div className="text-center">
@@ -795,12 +1188,12 @@ const Index = () => {
     switch (activeSection) {
       case 'dashboard':
         return renderDashboard();
-      case 'vacancies':
-        return renderVacancies();
+      case 'features':
+        return renderFeatures();
+      case 'pricing':
+        return renderPricing();
       case 'map':
         return renderMap();
-      case 'profile':
-        return renderProfile();
       case 'about':
         return renderAbout();
       default:
