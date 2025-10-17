@@ -1,12 +1,44 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const Business = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    company: '',
+    name: '',
+    email: '',
+    phone: ''
+  });
+
+  const handlePlanSelect = (planName: string) => {
+    toast({
+      title: 'План выбран!',
+      description: `Вы выбрали план "${planName}". Мы свяжемся с вами в ближайшее время.`
+    });
+  };
+
+  const handleSubmitRequest = () => {
+    if (!formData.company || !formData.name || !formData.email) {
+      toast({
+        title: 'Ошибка',
+        description: 'Пожалуйста, заполните все обязательные поля',
+        variant: 'destructive'
+      });
+      return;
+    }
+    toast({
+      title: 'Заявка отправлена!',
+      description: 'Мы свяжемся с вами в течение 24 часов'
+    });
+    setFormData({ company: '', name: '', email: '', phone: '' });
+  };
 
   const plans = [
     {
@@ -119,6 +151,7 @@ const Business = () => {
                 <Button 
                   className={`w-full ${plan.popular ? 'bg-[#20B0B4] hover:bg-[#20B0B4]/90' : ''}`}
                   variant={plan.popular ? 'default' : 'outline'}
+                  onClick={() => handlePlanSelect(plan.name)}
                 >
                   Выбрать план
                 </Button>
@@ -171,11 +204,36 @@ const Business = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-6">Оставить заявку</h3>
                 <div className="space-y-4">
-                  <Input placeholder="Название компании" className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" />
-                  <Input placeholder="Ваше имя" className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" />
-                  <Input placeholder="Email" type="email" className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" />
-                  <Input placeholder="Телефон" className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" />
-                  <Button className="w-full bg-[#20B0B4] hover:bg-[#20B0B4]/90" size="lg">
+                  <Input 
+                    placeholder="Название компании" 
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    value={formData.company}
+                    onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  />
+                  <Input 
+                    placeholder="Ваше имя" 
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  />
+                  <Input 
+                    placeholder="Email" 
+                    type="email" 
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  />
+                  <Input 
+                    placeholder="Телефон" 
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  />
+                  <Button 
+                    className="w-full bg-[#20B0B4] hover:bg-[#20B0B4]/90" 
+                    size="lg"
+                    onClick={handleSubmitRequest}
+                  >
                     Отправить заявку
                   </Button>
                   <p className="text-xs text-gray-400 text-center">

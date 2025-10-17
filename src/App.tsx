@@ -12,6 +12,7 @@ import Map from "./pages/Map";
 import AIAssistant from "./pages/AIAssistant";
 import Business from "./pages/Business";
 import Blog from "./pages/Blog";
+import ArticleDetail from "./pages/ArticleDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/ai-assistant" element={<AIAssistant />} />
           <Route path="/business" element={<Business />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/article/:id" element={<ArticleDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

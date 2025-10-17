@@ -9,15 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const AIAssistant = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
-
-  const exampleQuestions = [
-    'Какие навыки нужны для Frontend разработчика?',
-    'Какая средняя зарплата Python разработчика?',
-    'Как стать DevOps инженером?',
-    'Какие технологии сейчас в тренде?'
-  ];
-
-  const chatHistory = [
+  const [chatHistory, setChatHistory] = useState([
     {
       type: 'user',
       text: 'Какие навыки нужны для Frontend разработчика?'
@@ -27,7 +19,29 @@ const AIAssistant = () => {
       text: 'На основе анализа 1,247 вакансий, топ-5 навыков для Frontend разработчика:',
       skills: ['React', 'TypeScript', 'CSS/SCSS', 'Git', 'REST API']
     }
+  ]);
+
+  const exampleQuestions = [
+    'Какие навыки нужны для Frontend разработчика?',
+    'Какая средняя зарплата Python разработчика?',
+    'Как стать DevOps инженером?',
+    'Какие технологии сейчас в тренде?'
   ];
+
+  const handleSendMessage = () => {
+    if (!message.trim()) return;
+    
+    setChatHistory([
+      ...chatHistory,
+      { type: 'user', text: message },
+      { 
+        type: 'ai', 
+        text: 'Спасибо за вопрос! Я анализирую данные рынка и готовлю ответ для вас. Эта функция будет доступна в полной версии продукта.',
+        skills: []
+      }
+    ]);
+    setMessage('');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -104,7 +118,11 @@ const AIAssistant = () => {
               onChange={(e) => setMessage(e.target.value)}
               className="h-12"
             />
-            <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90">
+            <Button 
+              size="lg" 
+              className="bg-[#20B0B4] hover:bg-[#20B0B4]/90"
+              onClick={handleSendMessage}
+            >
               <Icon name="Send" size={20} />
             </Button>
           </div>

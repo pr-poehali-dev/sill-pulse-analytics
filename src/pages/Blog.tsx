@@ -10,6 +10,7 @@ const Blog = () => {
 
   const articles = [
     {
+      id: '1',
       title: 'Топ-10 навыков разработчика в 2024',
       category: 'Карьера',
       date: '15 октября 2024',
@@ -19,6 +20,7 @@ const Blog = () => {
       author: 'Алексей Петров'
     },
     {
+      id: '2',
       title: 'Как увеличить зарплату на 50%',
       category: 'Развитие',
       date: '12 октября 2024',
@@ -28,6 +30,7 @@ const Blog = () => {
       author: 'Мария Иванова'
     },
     {
+      id: '3',
       title: 'Тренды IT-рынка: осень 2024',
       category: 'Аналитика',
       date: '10 октября 2024',
@@ -37,6 +40,7 @@ const Blog = () => {
       author: 'Дмитрий Сидоров'
     },
     {
+      id: '1',
       title: 'Remote или офис: что выбирают в 2024',
       category: 'Исследования',
       date: '8 октября 2024',
@@ -46,6 +50,7 @@ const Blog = () => {
       author: 'Елена Смирнова'
     },
     {
+      id: '2',
       title: 'DevOps: самая востребованная специализация',
       category: 'Карьера',
       date: '5 октября 2024',
@@ -55,6 +60,7 @@ const Blog = () => {
       author: 'Игорь Волков'
     },
     {
+      id: '3',
       title: 'Искусственный интеллект в рекрутинге',
       category: 'Технологии',
       date: '1 октября 2024',
@@ -159,7 +165,11 @@ const Blog = () => {
                   </div>
                 </div>
 
-                <Button variant="ghost" className="w-full text-[#20B0B4] hover:bg-[#20B0B4]/10">
+                <Button 
+                  variant="ghost" 
+                  className="w-full text-[#20B0B4] hover:bg-[#20B0B4]/10"
+                  onClick={() => navigate(`/article/${article.id}`)}
+                >
                   Читать далее
                   <Icon name="ArrowRight" size={16} className="ml-2" />
                 </Button>

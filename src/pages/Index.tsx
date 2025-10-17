@@ -96,6 +96,7 @@ const Index = () => {
 
   const articles = [
     {
+      id: '1',
       title: 'Топ-10 навыков разработчика в 2024',
       category: 'Карьера',
       date: '15 октября 2024',
@@ -104,6 +105,7 @@ const Index = () => {
       excerpt: 'Анализируем рынок и выявляем самые востребованные навыки года'
     },
     {
+      id: '2',
       title: 'Как увеличить зарплату на 50%',
       category: 'Развитие',
       date: '12 октября 2024',
@@ -112,6 +114,7 @@ const Index = () => {
       excerpt: 'Практические советы от экспертов рынка труда'
     },
     {
+      id: '3',
       title: 'Тренды IT-рынка: осень 2024',
       category: 'Аналитика',
       date: '10 октября 2024',
@@ -613,7 +616,7 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {articles.map((article, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-[#20B0B4]" onClick={() => navigate('/blog')}>
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-[#20B0B4]" onClick={() => navigate(`/article/${article.id}`)}>
                 <CardContent className="pt-6 space-y-4">
                   <div className="text-6xl text-center">{article.image}</div>
                   

@@ -5,10 +5,26 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const Vacancies = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearch = () => {
+    toast({
+      title: 'Поиск запущен',
+      description: `Ищем вакансии по запросу: "${searchQuery || 'Все вакансии'}"` 
+    });
+  };
+  
+  const handleApply = (vacancy: string) => {
+    toast({
+      title: 'Отклик отправлен!',
+      description: `Ваш отклик на вакансию "${vacancy}" успешно отправлен`
+    });
+  };
 
   const vacancies = [
     {
@@ -70,7 +86,7 @@ const Vacancies = () => {
                 className="h-12"
               />
             </div>
-            <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90">
+            <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90" onClick={handleSearch}>
               <Icon name="Search" size={20} className="mr-2" />
               Искать
             </Button>
@@ -105,7 +121,13 @@ const Vacancies = () => {
                   </div>
                   <div className="text-right">
                     <div className="text-xl font-bold text-[#20B0B4] mb-2">{vacancy.salary}</div>
-                    <Button className="bg-[#20B0B4] hover:bg-[#20B0B4]/90">
+                    <Button 
+                      className="bg-[#20B0B4] hover:bg-[#20B0B4]/90"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleApply(vacancy.title);
+                      }}
+                    >
                       Откликнуться
                     </Button>
                   </div>

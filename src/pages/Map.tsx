@@ -4,10 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const Map = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  
+  const handleRegionClick = (region: string, vacancies: number) => {
+    toast({
+      title: `Регион: ${region}`,
+      description: `Найдено ${vacancies} вакансий. Переходим к поиску...`
+    });
+    setTimeout(() => navigate('/vacancies'), 1000);
+  };
 
   const regionData = [
     { region: 'Москва', vacancies: 3245, salary: '180000', coords: { x: 200, y: 180 } },
@@ -56,6 +66,7 @@ const Map = () => {
                     }`}
                     onMouseEnter={() => setHoveredRegion(region.region)}
                     onMouseLeave={() => setHoveredRegion(null)}
+                    onClick={() => handleRegionClick(region.region, region.vacancies)}
                   >
                     <div className="flex items-center space-x-3">
                       <Icon name="MapPin" size={20} className="text-[#20B0B4]" />
@@ -84,6 +95,7 @@ const Map = () => {
                   <div 
                     key={index} 
                     className="flex items-center justify-between hover:bg-[#20B0B4]/10 p-2 rounded transition-colors cursor-pointer"
+                    onClick={() => handleRegionClick(region.region, region.vacancies)}
                   >
                     <span className="text-[#072A4A] font-medium">{region.region}</span>
                     <Badge className="bg-[#20B0B4] hover:bg-[#072A4A] transition-colors">
