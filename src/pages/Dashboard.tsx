@@ -178,6 +178,24 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="mt-8 bg-gradient-to-br from-[#072A4A] to-[#0a3d5f] text-white border-none">
+          <CardContent className="py-12 text-center">
+            <div className="text-5xl mb-4">🚀</div>
+            <h3 className="text-2xl font-bold mb-3">Разблокируйте все возможности</h3>
+            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+              Получите доступ к расширенной аналитике, AI-помощнику и персональным рекомендациям
+            </p>
+            <Button 
+              size="lg" 
+              className="bg-[#20B0B4] hover:bg-[#20B0B4]/90"
+              onClick={() => navigate('/pricing')}
+            >
+              <Icon name="Zap" size={20} className="mr-2" />
+              Посмотреть тарифы
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

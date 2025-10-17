@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import PricingPlans from '@/components/PricingPlans';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Index = () => {
     { label: 'Дашборд', path: '/dashboard' },
     { label: 'Аналитика', path: '/analytics' },
     { label: 'Вакансии', path: '/vacancies' },
-    { label: 'Карта', path: '/map' },
+    { label: 'Тарифы', path: '/pricing' },
     { label: 'Тота ИИ', path: '/ai-assistant' },
     { label: 'Для агентств', path: '/business' },
     { label: 'Блог', path: '/blog' }
@@ -226,13 +227,13 @@ const Index = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90 text-lg px-8 py-6" onClick={() => navigate('/dashboard')}>
+                <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90 text-lg px-8 py-6" onClick={() => navigate('/pricing')}>
                   <Icon name="Rocket" size={20} className="mr-2" />
-                  Попробовать бесплатно
+                  Начать бесплатно
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
-                  <Icon name="Play" size={20} className="mr-2" />
-                  Смотреть демо
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6" onClick={() => navigate('/pricing')}>
+                  <Icon name="CreditCard" size={20} className="mr-2" />
+                  Смотреть тарифы
                 </Button>
               </div>
 
@@ -724,6 +725,32 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section - Тарифы */}
+      <section id="pricing" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 space-y-4">
+            <Badge className="bg-[#20B0B4]/10 text-[#20B0B4] border-[#20B0B4]">
+              💎 Тарифы
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#072A4A]">
+              Выберите свой план
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Инвестируйте в свою карьеру — начните бесплатно или выберите подходящий тариф
+            </p>
+          </div>
+
+          <PricingPlans type="personal" />
+
+          <div className="mt-12 text-center">
+            <Button size="lg" className="bg-[#20B0B4] hover:bg-[#20B0B4]/90" onClick={() => navigate('/pricing')}>
+              Сравнить все тарифы
+              <Icon name="ArrowRight" size={16} className="ml-2" />
+            </Button>
           </div>
         </div>
       </section>
