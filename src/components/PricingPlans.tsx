@@ -133,45 +133,45 @@ const PricingPlans = ({ type = 'personal' }: PricingPlansProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
       {plans.map((plan, index) => (
         <Card 
           key={index}
           className={`relative hover:shadow-2xl transition-all duration-300 ${
-            plan.popular ? 'border-[#20B0B4] border-2 scale-105' : 'border-gray-200'
+            plan.popular ? 'border-[#20B0B4] border-2 sm:scale-105' : 'border-gray-200'
           }`}
         >
           {plan.popular && (
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <Badge className="bg-[#20B0B4] text-white px-4 py-1">
+            <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
+              <Badge className="bg-[#20B0B4] text-white px-3 sm:px-4 py-1 text-xs sm:text-sm">
                 ⭐ Популярный
               </Badge>
             </div>
           )}
           
-          <CardHeader>
+          <CardHeader className="pb-4">
             <CardTitle className="text-center">
-              <div className="text-2xl font-bold text-[#072A4A] mb-2">{plan.name}</div>
-              <div className="text-sm text-gray-600 mb-4">{plan.description}</div>
+              <div className="text-xl sm:text-2xl font-bold text-[#072A4A] mb-1 sm:mb-2">{plan.name}</div>
+              <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">{plan.description}</div>
               <div className="flex items-baseline justify-center">
-                <span className="text-4xl font-bold text-[#20B0B4]">{plan.price}</span>
-                <span className="text-gray-600 ml-2">/{plan.period}</span>
+                <span className="text-3xl sm:text-4xl font-bold text-[#20B0B4]">{plan.price}</span>
+                <span className="text-sm sm:text-base text-gray-600 ml-2">/{plan.period}</span>
               </div>
             </CardTitle>
           </CardHeader>
           
-          <CardContent>
-            <ul className="space-y-3 mb-6">
+          <CardContent className="pt-0">
+            <ul className="space-y-2 sm:space-y-3 mb-5 sm:mb-6">
               {plan.features.map((feature, i) => (
-                <li key={i} className="flex items-start space-x-3">
-                  <Icon name="CheckCircle2" size={20} className="text-[#20B0B4] flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">{feature}</span>
+                <li key={i} className="flex items-start space-x-2 sm:space-x-3">
+                  <Icon name="CheckCircle2" size={18} className="text-[#20B0B4] flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-base text-gray-700">{feature}</span>
                 </li>
               ))}
             </ul>
             
             <Button 
-              className={`w-full ${plan.popular ? 'bg-[#20B0B4] hover:bg-[#20B0B4]/90' : ''}`}
+              className={`w-full text-sm sm:text-base ${plan.popular ? 'bg-[#20B0B4] hover:bg-[#20B0B4]/90' : ''}`}
               variant={plan.popular ? 'default' : 'outline'}
               onClick={() => handlePlanSelect(plan.name, plan.price)}
             >
