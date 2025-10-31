@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
 import Vacancies from "./pages/Vacancies";
+import VacancyDetail from "./pages/VacancyDetail";
 import Map from "./pages/Map";
 import AIAssistant from "./pages/AIAssistant";
 import Business from "./pages/Business";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/vacancies" element={<Vacancies />} />
+          <Route path="/vacancy/:id" element={<VacancyDetail />} />
           <Route path="/map" element={<Map />} />
           <Route path="/ai-assistant" element={<AIAssistant />} />
           <Route path="/business" element={<Business />} />
